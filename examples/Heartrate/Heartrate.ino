@@ -12,7 +12,7 @@
 
 #include "Heartrate.h"
 
-Heartrate heartrate(ANALOG_MODE); ///< ANALOG_MODE or DIGITAL_MODE
+Heartrate heartrate(DIGITAL_MODE); ///< ANALOG_MODE or DIGITAL_MODE
 
 void setup() {
   Serial.begin(115200);
