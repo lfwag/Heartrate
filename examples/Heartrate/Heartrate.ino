@@ -9,7 +9,7 @@
 * @version  V1.0
 * @date  2015-12-24
 */
-
+define heartratePin A1
 #include "Heartrate.h"
 
 Heartrate heartrate(DIGITAL_MODE); ///< ANALOG_MODE or DIGITAL_MODE
@@ -22,7 +22,7 @@ void loop() {
   unsigned int rateValue;
   static unsigned char count;
   static unsigned int value[SAMPLE_NUMBER];  ///< Initializes the value of sampling points
-  value[count]=heartrate.getValue(A1,count); ///< A1 foot sampled values
+  value[count]=heartrate.getValue(heartratePin,count); ///< A1 foot sampled values
   count++;
   if(count>=SAMPLE_NUMBER)count=0;  
   rateValue = heartrate.getRate(); ///< Get heart rate value 
