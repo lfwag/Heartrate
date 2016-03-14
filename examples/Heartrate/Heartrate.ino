@@ -9,7 +9,7 @@
 * @version  V1.0
 * @date  2015-12-24
 */
-define heartratePin A1
+#define heartratePin A1
 #include "Heartrate.h"
 
 Heartrate heartrate(DIGITAL_MODE); ///< ANALOG_MODE or DIGITAL_MODE
