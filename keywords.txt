@@ -17,6 +17,7 @@ minNumber	KEYWORD2
 analogGetRate	KEYWORD2
 digitalGetRate	KEYWORD2
 getRate	KEYWORD2
+getCnt	KEYWORD2
 getValue	KEYWORD2
 
 #######################################

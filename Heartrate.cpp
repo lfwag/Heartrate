@@ -1,19 +1,37 @@
 #include "Heartrate.h"
 
-unsigned int value[SAMPLE_NUMBER]={0}; ///< Initialize sampling point value
+#define debug_ 1
+
+uint16_t value[SAMPLE_NUMBER]={0}; ///< Initialize sampling point value
+
+/*!
+* @brief Get a Sample values
+*
+* @brief  Get a Sample values
+*
+* @return uint16_t
+*/ 
+uint16_t Heartrate::getValue(uint8_t pin) 
+{
+	valueCount_++;
+    if(valueCount_ >= SAMPLE_NUMBER){
+        valueCount_ = 0;
+    }    
+	value[valueCount_] = analogRead(pin);  
+    return(value[valueCount_]);
+
+}
 
 /*!
 * @brief Get a sample
 *
-* @brief  Get a sample
+* @brief  Get the current location
 *
-* @return unsigned int
+* @return uint8_t
 */ 
-unsigned int Heartrate::getValue(unsigned char pin,unsigned char count)
+uint8_t Heartrate::getCnt(void) 
 {
-	valueCount_ = count;
-	value[valueCount_] = analogRead(pin); 
-	return(value[count]);
+    return(valueCount_);
 }
 
 /*!
@@ -24,9 +42,9 @@ unsigned int Heartrate::getValue(unsigned char pin,unsigned char count)
 * @return char
 */ 
 
-char Heartrate::maxNumber(unsigned char count)
+char Heartrate::maxNumber(uint8_t count)
 {
-	unsigned int temp1,temp2;
+	uint16_t temp1,temp2;
 	for(int i=0;i<4;i++){
 		if(count<i){
 			temp1 = SAMPLE_NUMBER+count-i;
@@ -57,9 +75,9 @@ char Heartrate::maxNumber(unsigned char count)
 * @return void
 */ 
 
-void Heartrate::minNumber(unsigned char count)
+void Heartrate::minNumber(uint8_t count)
 {
-	unsigned int temp1,temp2;
+	uint16_t temp1,temp2;
 	for(int i=0;i<4;i++){
 		if(count<i){
 			temp1 = SAMPLE_NUMBER+count-i;
@@ -83,13 +101,13 @@ void Heartrate::minNumber(unsigned char count)
 *
 * @brief  Sample ten times in a row beating heart rate value is computed
 *
-* @return unsigned int
+* @return uint16_t
 */ 
 
-unsigned int Heartrate::analogGetRate(void)
+uint16_t Heartrate::analogGetRate(void)
 {
 
-	static unsigned char timeFlag;
+	static uint8_t timeFlag;
 	static unsigned long sampleTime[10];
 	unsigned long valueTime_;
 	minNumber(valueCount_);
@@ -97,8 +115,8 @@ unsigned int Heartrate::analogGetRate(void)
 	{
 		sampleTime[timeFlag]=millis();
 		
-		unsigned char timeFlagMax = timeFlag;
-		unsigned char timeFlagMin;
+		uint8_t timeFlagMax = timeFlag;
+		uint8_t timeFlagMin;
 		if(timeFlag){
 			timeFlagMin = timeFlag-1;
 		}else{
@@ -108,6 +126,7 @@ unsigned int Heartrate::analogGetRate(void)
 			if((sampleTime[timeFlagMax]-sampleTime[timeFlagMin])<270 || (sampleTime[timeFlagMax]-sampleTime[timeFlagMin])>2000){
 				timeFlag++;
 				if(timeFlag>=10)timeFlag=0;
+                Serial.println("Wait for valid data !");  
 				return(0);
 			}
 			if(timeFlagMax){
@@ -124,7 +143,7 @@ unsigned int Heartrate::analogGetRate(void)
 		
 		
 		unsigned long Arrange[9]={0};
-		unsigned char timeFlag_ = timeFlag++;
+		uint8_t timeFlag_ = timeFlag++;
 		for(int i=0;i<9;i++){
 			if(timeFlag_){	
 				Arrange[i] = sampleTime[timeFlag_]-sampleTime[timeFlag_-1];	
@@ -149,11 +168,12 @@ unsigned int Heartrate::analogGetRate(void)
 		}		
 
 		if((Arrange[6]-Arrange[2])>100){
+            Serial.println("Wait for valid data !");  
 			return(0);
 		}	
 		
 		valueTime_ = 300000/Arrange_;///<60*1000*(6-1)	
-		return((unsigned int)valueTime_);
+		return((uint16_t)valueTime_);
 	}	
 	return(0);
 }
@@ -163,16 +183,16 @@ unsigned int Heartrate::analogGetRate(void)
 *
 * @brief  Sample ten times in a row beating heart rate value is computed
 *
-* @return unsigned int
+* @return uint16_t
 */ 
 
-unsigned int Heartrate::digitalGetRate(void)
+uint16_t Heartrate::digitalGetRate(void)
 {
 
-	static unsigned char timeFlag;
+	static uint8_t timeFlag;
 	static unsigned long sampleTime[10];
 	unsigned long valueTime_;
-	unsigned char count_;
+	uint8_t count_;
 	
 	if(valueCount_){
 		count_ = valueCount_-1;
@@ -182,8 +202,8 @@ unsigned int Heartrate::digitalGetRate(void)
 	if((value[valueCount_]>1000)&&(value[count_]<20)){
 		sampleTime[timeFlag]=millis();	
 		
-		unsigned char timeFlagMax = timeFlag;
-		unsigned char timeFlagMin;
+		uint8_t timeFlagMax = timeFlag;
+		uint8_t timeFlagMin;
 		if(timeFlag){
 			timeFlagMin = timeFlag-1;
 		}else{
@@ -193,6 +213,7 @@ unsigned int Heartrate::digitalGetRate(void)
 			if((sampleTime[timeFlagMax]-sampleTime[timeFlagMin])<270 || (sampleTime[timeFlagMax]-sampleTime[timeFlagMin])>2000){
 				timeFlag++;
 				if(timeFlag>=10)timeFlag=0;
+                Serial.println("Wait for valid data !");   
 				return(0);
 			}
 			if(timeFlagMax){
@@ -208,7 +229,7 @@ unsigned int Heartrate::digitalGetRate(void)
 		}
 		
 		unsigned long Arrange[9]={0};
-		unsigned char timeFlag_ = timeFlag++;
+		uint8_t timeFlag_ = timeFlag++;
 		for(int i=0;i<9;i++){
 			if(timeFlag_){	
 				Arrange[i] = sampleTime[timeFlag_]-sampleTime[timeFlag_-1];	
@@ -233,11 +254,12 @@ unsigned int Heartrate::digitalGetRate(void)
 		}		
 	
 		if((Arrange[6]-Arrange[2])>100){
+            Serial.println("Wait for valid data !");  
 			return(0);
 		}	
 		
 		valueTime_ = 300000/Arrange_;///<60*1000*(6-1)
-		return((unsigned int)valueTime_);
+		return((uint16_t)valueTime_);
 
 	}else{
 		return(0);
@@ -249,9 +271,9 @@ unsigned int Heartrate::digitalGetRate(void)
 *
 * @brief  Sample ten times in a row beating heart rate value is computed
 *
-* @return unsigned int
+* @return uint16_t
 */ 
-unsigned int Heartrate::getRate(void)
+uint16_t Heartrate::getRate(void)
 {
 	if(mode_ == DIGITAL_MODE){
 		return(digitalGetRate());

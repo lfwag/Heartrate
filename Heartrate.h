@@ -30,18 +30,19 @@ class Heartrate
 {
 public:
     Heartrate(char mode) { mode_ = mode; }
-	char maxNumber(unsigned char count);
-	void minNumber(unsigned char count);
-	unsigned int analogGetRate(void);
-	unsigned int digitalGetRate(void);
-	unsigned int getRate(void);
-	unsigned int getValue(unsigned char pin,unsigned char count);	
+	char maxNumber(uint8_t count);
+	void minNumber(uint8_t count);
+	uint16_t analogGetRate(void);
+	uint16_t digitalGetRate(void);
+	uint16_t getRate(void);
+    uint8_t getCnt(void); 
+	uint16_t getValue(uint8_t pin);	
 	
 private:	
 	
-	unsigned char mode_;	
-	unsigned char valueCount_;
-	unsigned char valueFlag;	
+	uint8_t mode_;	
+	uint8_t valueCount_=255;
+	uint8_t valueFlag;	
 	
 };
 
