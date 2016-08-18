@@ -6,8 +6,6 @@
 *  time measurement of blood oxygen saturation, based on measured values calculate heart rate values.
 * 
 * @author linfeng(490289303@qq.com)
-* @version  V1.1
-* @date  2016-8-16
 * @version  V1.0
 * @date  2015-12-24
 */
@@ -31,7 +29,7 @@ void loop() {
 }
 
 /******************************************************************************
-  Copyright (C) <2016>  <linfeng>
+  Copyright (C) <2015>  <linfeng>
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or

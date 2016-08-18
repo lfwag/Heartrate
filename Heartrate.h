@@ -43,6 +43,7 @@ private:
 	uint8_t mode_;	
 	uint8_t valueCount_=255;
 	uint8_t valueFlag;	
+    uint32_t nowTim=0,lastTim=0;
 	
 };
 
