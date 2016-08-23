@@ -1,5 +1,5 @@
 ***************************************************************
-* Arduino Heartrate Library - Version 1.1.1
+* Arduino Heartrate Library - Version 1.1
 * by linfeng<490289303@qq.com>
 *
 * This Library is licensed under a GPLv3 License
